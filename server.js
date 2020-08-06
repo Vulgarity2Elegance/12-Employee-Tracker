@@ -11,5 +11,5 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
     if (err) throw err;
-    console.log("It is connected to localhost 3306.");
+    console.log("connected as id " + connection.threadId);
 });

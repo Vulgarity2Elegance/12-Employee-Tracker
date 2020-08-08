@@ -133,17 +133,29 @@ function view() {
         type: "list",
         name: "View",
         Message: "What would you like to view?",
-        choices: ["Department", "Employee", "Role", "All Employees by Manager"],
+        choices: [
+            "All Employees",
+            "All Employees by Department",
+            "All Employees by Manager",
+            "All Departments",
+            "All Roles",
+        ],
     }).then((answer) => {
         switch (answer.View) {
-            case "Department":
-                viewDepartment();
+            case "All Employees":
+                viewAllEmployees();
                 break;
-            case "Role":
-                viewRole();
+            case "All Employees by Department":
+                viewEmplByDept();
                 break;
-            case "Employee":
-                viewEmployee();
+            case "All Employees by Manager":
+                viewEmplByMgr();
+                break;
+            case "All Departments":
+                viewAllDepartments();
+                break;
+            case "All Roles":
+                viewAllRoles();
                 break;
         }
     });
@@ -276,9 +288,31 @@ function removeDepartment() {
 }
 
 // Reading all departments, all employees and and all roles respectively
-function viewDepartment() {
-    connection.query(`SELECT * FROM department;`, (err, res) => {
+async function viewAllEmployees() {
+    const query = `SELECT employee.id, employee.first_name, employee.last_name, role.title, name AS department, role.salary, manager_id AS manager FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN department ON (department.id = role.department_id)`;
+    await connection.query(query, (err, res) => {
         if (err) throw err;
+        console.log("");
         console.table(res);
     });
+    start();
+}
+
+async function viewAllDepartments() {
+    await connection.query(`SELECT * FROM department;`, (err, res) => {
+        if (err) throw err;
+        console.log("");
+        console.table(res);
+    });
+    start();
+}
+
+async function viewAllRoles() {
+    const query = `SELECT role.id, role.title, role.salary, name AS department FROM role INNER JOIN department ON (role.department_id = department.id)`;
+    await connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log("");
+        console.table(res);
+    });
+    start();
 }

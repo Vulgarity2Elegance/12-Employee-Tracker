@@ -70,7 +70,7 @@ function add() {
         type: "list",
         name: "Add",
         Message: "What would you like to add?",
-        choices: ["Department", "Employee", "Role"],
+        choices: ["Department", "Role", "Employee"],
     }).then((answer) => {
         switch (answer.Add) {
             case "Department":
@@ -150,8 +150,8 @@ function view() {
 }
 
 // Creating a department, an employee and a role respectively
-function addDepartment() {
-    prompt([
+async function addDepartment() {
+    await prompt([
         {
             type: "number",
             name: "departmentID",
@@ -174,15 +174,17 @@ function addDepartment() {
                 console.log("Successfully added a new department!");
             }
         );
+        start();
     });
 }
 
-function addRole() {
-    prompt([
+async function addRole() {
+    await prompt([
         {
             type: "number",
             name: "roleID",
-            message: "What is the ID of the new role?",
+            message:
+                "What is the ID of the new role? (Sales Lead = 1; Salesperson = 2; Lead Engineer = 3; Software Engineer = 4; Account Manager = 5; Accountant = 6; Legal Team Lead = 7; Lawyer = 8; Junior Software Engineer = 9; )",
         },
         {
             type: "input",
@@ -210,11 +212,12 @@ function addRole() {
                 console.log("Successfully added a role!");
             }
         );
+        start();
     });
 }
 
-function addEmployee() {
-    prompt([
+async function addEmployee() {
+    await prompt([
         {
             type: "input",
             name: "firstName",
@@ -249,9 +252,10 @@ function addEmployee() {
             ],
             (err, res) => {
                 if (err) throw err;
-                console.log("Successfully added a new employee!");
+                console.log("Successfully added an new employee!");
             }
         );
+        start();
     });
 }
 

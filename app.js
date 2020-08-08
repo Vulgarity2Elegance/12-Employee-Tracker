@@ -14,6 +14,7 @@ connection.connect((err) => {
     start();
 });
 
+// Start Employee Trackerit
 function start() {
     console.log(
         `
@@ -62,7 +63,8 @@ function start() {
     });
 }
 
-// ADD
+// Executing four types of Queries: creating, destroying, updating and reading
+// Creating
 function add() {
     prompt({
         type: "list",
@@ -74,17 +76,17 @@ function add() {
             case "Department":
                 addDepartment();
                 break;
-            case "Employee":
-                addEmployee();
-                break;
             case "Role":
                 addRole();
+                break;
+            case "Employee":
+                addEmployee();
                 break;
         }
     });
 }
 
-// DELETE
+// Destroying
 function remove() {
     prompt({
         type: "list",
@@ -96,17 +98,17 @@ function remove() {
             case "Department":
                 removeDepartment();
                 break;
-            case "Employee":
-                removeEmployee();
-                break;
             case "Role":
                 removeRole();
+                break;
+            case "Employee":
+                removeEmployee();
                 break;
         }
     });
 }
 
-// UPDATE
+// Updating
 function update() {
     prompt({
         type: "list",
@@ -125,7 +127,7 @@ function update() {
     });
 }
 
-// VIEW
+// Reading
 function view() {
     prompt({
         type: "list",
@@ -137,36 +139,127 @@ function view() {
             case "Department":
                 viewDepartment();
                 break;
-            case "Employee":
-                viewEmployee();
-                break;
             case "Role":
                 viewRole();
+                break;
+            case "Employee":
+                viewEmployee();
                 break;
         }
     });
 }
 
-// Department
+// Creating a department, an employee and a role respectively
 function addDepartment() {
-    prompt({
-        name: "department",
-        type: "input",
-        message:
-            "What is the name of the new department that you would like to add?",
-    }).then((answer) => {
-        const query = `INSERT INTO department (name) VALUES (?);`;
-        connection.query(query, [answer.department], (err, res) => {
-            if (err) throw err;
-            console.log("Successfully added!");
-        });
+    prompt([
+        {
+            type: "number",
+            name: "departmentID",
+            message:
+                "What is the ID of the new department that you would like to add?",
+        },
+        {
+            type: "input",
+            name: "department",
+            message:
+                "What is the name of the new department that you would like to add?",
+        },
+    ]).then((answer) => {
+        const query = `INSERT INTO department (id, name) VALUES (?, ?);`;
+        connection.query(
+            query,
+            [answer.departmentID, answer.department],
+            (err, res) => {
+                if (err) throw err;
+                console.log("Successfully added a new department!");
+            }
+        );
     });
 }
 
+function addRole() {
+    prompt([
+        {
+            type: "number",
+            name: "roleID",
+            message: "What is the ID of the new role?",
+        },
+        {
+            type: "input",
+            name: "role",
+            message: "What is the title of the new Role?",
+        },
+        {
+            type: "input",
+            name: "salary",
+            message: "What is the salary of the new Role?",
+        },
+        {
+            type: "number",
+            name: "departmentID",
+            message:
+                "What is the Department Id of the new Role? (Sales = 1; Engineering = 2; Finance = 3; Legal = 4;)",
+        },
+    ]).then((answer) => {
+        const query = `INSERT INTO role (id, title, salary, department_id) VALUES (?, ?, ?, ?);`;
+        connection.query(
+            query,
+            [answer.roleID, answer.role, answer.salary, answer.departmentID],
+            (err, res) => {
+                if (err) throw err;
+                console.log("Successfully added a role!");
+            }
+        );
+    });
+}
+
+function addEmployee() {
+    prompt([
+        {
+            type: "input",
+            name: "firstName",
+            message: "What is the first name of the new employee?",
+        },
+        {
+            type: "input",
+            name: "lastName",
+            message: "What is the last name of the new employee?",
+        },
+        {
+            type: "number",
+            name: "roleID",
+            message:
+                "What is the role ID of the new employee? (Sales Lead = 1; Salesperson = 2; Lead Engineer = 3; Software Engineer = 4; Account Manager = 5; Accountant = 6; Legal Team Lead = 7; Lawyer = 8; Junior Software Engineer = 9; )",
+        },
+        {
+            type: "number",
+            name: "managerID",
+            message:
+                "What is the manager ID of the new employee? (John Doe [Sales Lead] = 1; Ashley Rodriguez [Lead Engineer] = 3; Malia Brown [Account Manager] = 5; Tom Allen [Legal Team Lead] = 7;) ",
+        },
+    ]).then((answer) => {
+        const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`;
+        connection.query(
+            query,
+            [
+                answer.firstName,
+                answer.lastName,
+                answer.roleID,
+                answer.managerID,
+            ],
+            (err, res) => {
+                if (err) throw err;
+                console.log("Successfully added a new employee!");
+            }
+        );
+    });
+}
+
+// Destroying a department, an employee and a role respectively
 function removeDepartment() {
     prompt({
-        name: "department",
         type: "input",
+        name: "department",
         message:
             "What is the name of the department that you would like to remove?",
     }).then((answer) => {
@@ -178,11 +271,10 @@ function removeDepartment() {
     });
 }
 
+// Reading all departments, all employees and and all roles respectively
 function viewDepartment() {
     connection.query(`SELECT * FROM department;`, (err, res) => {
         if (err) throw err;
         console.table(res);
     });
 }
-
-// Employee

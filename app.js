@@ -53,6 +53,7 @@ function start() {
                 break;
             case "Update":
                 update();
+                break;
             case "View":
                 view();
                 break;
@@ -284,6 +285,36 @@ function removeDepartment() {
             if (err) throw err;
             console.log("Successfully deleted!");
         });
+    });
+}
+
+// Update employee roles
+async function updateEmployeeRoles() {
+    await prompt([
+        {
+            type: "list",
+            name: "employeeID",
+            message: "Which employee's role would you like to change?",
+        },
+        {
+            type: "input",
+            name: "roleID",
+            message: "Which role would you like to assign to the employee?",
+        },
+    ]).then((answer) => {
+        const query = `UPDATE employee SET role_id = ? WHERE id = ?`;
+        connection.query(
+            query,
+            [answer.roleID, answer.employeeID],
+            (err, res) => {
+                if (err) throw err;
+                console.table(res);
+                console.log(
+                    "Successfully updated the slected employee's role!"
+                );
+            }
+        );
+        start();
     });
 }
 

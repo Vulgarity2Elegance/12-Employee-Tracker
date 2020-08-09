@@ -316,3 +316,39 @@ async function viewAllRoles() {
     });
     start();
 }
+
+// Reading all employees by either Department or Manager
+async function viewEmplByDept() {
+    await prompt({
+        type: "list",
+        name: "department",
+        message: "Which department would you like to view?",
+        choices: ["Sales", "Engineering", "Finance", "Legal"],
+    }).then((answer) => {
+        const query = `SELECT employee.id, first_name, last_name, role.title, name AS department, role.salary, manager_id AS manager FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN department ON (department.id = role.department_id) WHERE department.name = ?;`;
+        connection.query(query, [answer.department], (err, res) => {
+            if (err) throw err;
+            console.log("");
+            console.table(res);
+        });
+        start();
+    });
+}
+
+async function viewEmplByMgr() {
+    await prompt({
+        type: "list",
+        name: "manager",
+        message:
+            "Which manager would you like to view? (John Doe [Sales Lead] = 1; Ashley Rodriguez [Lead Engineer] = 3; Malia Brown [Account Manager] = 5; Tom Allen [Legal Team Lead] = 7;)",
+        choices: ["1", "3", "5", "7"],
+    }).then((answer) => {
+        const query = `SELECT employee.id, first_name, last_name, role.title, name AS department, role.salary, manager_id AS manager FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN department ON (department.id = role.department_id) WHERE manager_id = ?;`;
+        connection.query(query, [answer.manager], (err, res) => {
+            if (err) throw err;
+            console.log("");
+            console.table(res);
+        });
+        start();
+    });
+}

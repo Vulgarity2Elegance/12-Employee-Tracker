@@ -292,9 +292,9 @@ function removeDepartment() {
 async function updateEmployeeRoles() {
     await prompt([
         {
-            type: "list",
+            type: "input",
             name: "employeeID",
-            message: "Which employee's role would you like to change?",
+            message: "Which employee's role that you would like to change?",
         },
         {
             type: "input",
@@ -308,9 +308,41 @@ async function updateEmployeeRoles() {
             [answer.roleID, answer.employeeID],
             (err, res) => {
                 if (err) throw err;
+                console.log("");
                 console.table(res);
                 console.log(
                     "Successfully updated the slected employee's role!"
+                );
+            }
+        );
+        start();
+    });
+}
+
+// Update employee manager
+async function updateEmployeeManagers() {
+    await prompt([
+        {
+            type: "input",
+            name: "employeeID",
+            message: "Which employee that you would like to change?",
+        },
+        {
+            type: "input",
+            name: "managerID",
+            message: "Which manager would you like to assign to the employee?",
+        },
+    ]).then((answer) => {
+        const query = `UPDATE employee SET manager_id = ? WHERE id = ?`;
+        connection.query(
+            query,
+            [answer.managerID, answer.employeeID],
+            (err, res) => {
+                if (err) throw err;
+                console.log("");
+                console.table(res);
+                console.log(
+                    "Successfully updated the slected employee's manager!"
                 );
             }
         );

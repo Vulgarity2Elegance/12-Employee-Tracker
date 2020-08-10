@@ -11,11 +11,6 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
     if (err) throw err;
-    start();
-});
-
-// Start Employee Trackerit
-function start() {
     console.log(
         `
         ███████╗███╗   ███╗██████╗ ██╗      ██████╗ ██╗   ██╗███████╗███████╗    
@@ -35,6 +30,11 @@ function start() {
         
         `
     );
+    start();
+});
+
+// Start Employee Trackerit
+function start() {
     prompt([
         {
             type: "list",
@@ -57,7 +57,15 @@ function start() {
                 view();
                 break;
             default:
-                console.log("Bye~");
+                console.log(`
+                   ██████╗ ██╗   ██╗███████╗    ██╗
+                   ██╔══██╗╚██╗ ██╔╝██╔════╝    ██║
+                   ██████╔╝ ╚████╔╝ █████╗      ██║
+                   ██╔══██╗  ╚██╔╝  ██╔══╝      ╚═╝
+                   ██████╔╝   ██║   ███████╗    ██╗
+                   ╚═════╝    ╚═╝   ╚══════╝    ╚═╝
+
+                `);
                 process.exit();
         }
     });

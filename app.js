@@ -93,7 +93,7 @@ function remove() {
         type: "list",
         name: "Remove",
         Message: "What would you like to remove?",
-        choices: ["Department", "Employee", "Role"],
+        choices: ["Department", "Role", "Employee"],
     }).then((answer) => {
         switch (answer.Remove) {
             case "Department":
@@ -169,7 +169,7 @@ async function addDepartment() {
             type: "number",
             name: "departmentID",
             message:
-                "What is the ID of the new department that you would like to add?",
+                "What is the ID of the new department that you would like to add? (Sales = 1; Engineering = 2; Finance = 3; Legal = 4;)",
         },
         {
             type: "input",
@@ -184,6 +184,8 @@ async function addDepartment() {
             [answer.departmentID, answer.department],
             (err, res) => {
                 if (err) throw err;
+                console.log("");
+                console.table(res);
                 console.log("Successfully added a new department!");
             }
         );
@@ -222,6 +224,8 @@ async function addRole() {
             [answer.roleID, answer.role, answer.salary, answer.departmentID],
             (err, res) => {
                 if (err) throw err;
+                console.log("");
+                console.table(res);
                 console.log("Successfully added a role!");
             }
         );
@@ -265,6 +269,8 @@ async function addEmployee() {
             ],
             (err, res) => {
                 if (err) throw err;
+                console.log("");
+                console.table(res);
                 console.log("Successfully added an new employee!");
             }
         );
@@ -272,9 +278,9 @@ async function addEmployee() {
     });
 }
 
-// Destroying a department, an employee and a role respectively
-function removeDepartment() {
-    prompt({
+// Destroying a department, a role, and an employee respectively
+async function removeDepartment() {
+    await prompt({
         type: "input",
         name: "department",
         message:
@@ -283,8 +289,43 @@ function removeDepartment() {
         const query = `DELETE FROM department WHERE name = ?`;
         connection.query(query, [answer.department], (err, res) => {
             if (err) throw err;
-            console.log("Successfully deleted!");
+            console.log("");
+            console.log("Successfully deleted the selected department!");
         });
+        start();
+    });
+}
+
+async function removeRole() {
+    await prompt({
+        type: "input",
+        name: "role",
+        message: "What is the name of the role that you would like to remove?",
+    }).then((answer) => {
+        const query = `DELETE FROM role WHERE title = ?`;
+        connection.query(query, [answer.role], (err, res) => {
+            if (err) throw err;
+            console.log("");
+            console.log("Successfully deleted the selected role!");
+        });
+        start();
+    });
+}
+
+async function removeEmployee() {
+    await prompt({
+        type: "input",
+        name: "employeeID",
+        message:
+            "What is the ID of the employee that you would like to remove?",
+    }).then((answer) => {
+        const query = `DELETE FROM employee WHERE id = ?`;
+        connection.query(query, [answer.employeeID], (err, res) => {
+            if (err) throw err;
+            console.log("");
+            console.log("Successfully deleted the selected employee!");
+        });
+        start();
     });
 }
 
@@ -294,7 +335,8 @@ async function updateEmployeeRoles() {
         {
             type: "input",
             name: "employeeID",
-            message: "Which employee's role that you would like to change?",
+            message:
+                "Which employee that you would like to change? (Please enter the ID of the Employee.)",
         },
         {
             type: "input",

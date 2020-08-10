@@ -1,29 +1,29 @@
 {
-  "name": "12-employee-tracker",
-  "version": "1.0.0",
-  "description": "A CMS Interface for managing a company's employees using node, inquirer, and MySQL.",
-  "main": "server.js",
-  "scripts": {
-    "test": "none",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Vulgarity2Elegance/12-Employee-Tracker.git"
-  },
-  "keywords": [
-    "node",
-    "inquirer",
-    "MySQL"
-  ],
-  "author": "Youzhi Hu",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Vulgarity2Elegance/12-Employee-Tracker/issues"
-  },
-  "homepage": "https://github.com/Vulgarity2Elegance/12-Employee-Tracker#readme",
-  "dependencies": {
-    "inquirer": "^7.3.3",
-    "mysql": "^2.18.1"
-  }
+    "name": "12-employee-tracker",
+    "version": "1.0.0",
+    "description": "A CMS Interface for managing a company's employees using node, inquirer, and MySQL.",
+    "main": "server.js",
+    "scripts": {
+        "test": "none",
+        "start": "node app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Vulgarity2Elegance/12-Employee-Tracker.git"
+    },
+    "keywords": [
+        "node",
+        "inquirer",
+        "MySQL"
+    ],
+    "author": "Youzhi Hu",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Vulgarity2Elegance/12-Employee-Tracker/issues"
+    },
+    "homepage": "https://github.com/Vulgarity2Elegance/12-Employee-Tracker#readme",
+    "dependencies": {
+        "inquirer": "^7.3.3",
+        "mysql": "^2.18.1"
+    }
 }

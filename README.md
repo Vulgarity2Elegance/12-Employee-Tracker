@@ -7,6 +7,8 @@
 
 To architect and build a solution for managing a company's employees using node, inquirer, and MySQL.
 
+Please visit this [YouTube](https://www.youtube.com/watch?v=MVoOQmg8qLo) Link to seethe entirety of the app's functionality
+
 ```
 As a business owner
 I want to be able to view and manage the departments, roles, and employees in my company

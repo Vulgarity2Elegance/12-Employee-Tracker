@@ -18,21 +18,20 @@ connection.connect((err) => {
 function start() {
     console.log(
         `
-        ___  ___ ___  ____   _       ___   __ __    ___    ___     
-        /  _]|   |   ||    \ | |     /   \ |  |  |  /  _]  /  _]    
-       /  [_ | _   _ ||  o  )| |    |     ||  |  | /  [_  /  [_     
-      |    _]|  \_/  ||   _/ | |___ |  O  ||  ~  ||    _]|    _]    
-      |   [_ |   |   ||  |   |     ||     ||___, ||   [_ |   [_     
-      |     ||   |   ||  |   |     ||     ||     ||     ||     |    
-      |_____||___|___||__|   |_____| \___/ |____/ |_____||_____|    
-       ______  ____    ____     __  __  _    ___  ____              
-      |      ||    \  /    |   /  ]|  |/ ]  /  _]|    \             
-      |      ||  D  )|  o  |  /  / |  ' /  /  [_ |  D  )            
-      |_|  |_||    / |     | /  /  |    \ |    _]|    /             
-        |  |  |    \ |  _  |/   \_ |     \|   [_ |    \             
-        |  |  |  .  \|  |  |\     ||  .  ||     ||  .  \            
-        |__|  |__|\_||__|__| \____||__|\_||_____||__|\_|            
-                                                                    
+        ███████╗███╗   ███╗██████╗ ██╗      ██████╗ ██╗   ██╗███████╗███████╗    
+        ██╔════╝████╗ ████║██╔══██╗██║     ██╔═══██╗╚██╗ ██╔╝██╔════╝██╔════╝    
+        █████╗  ██╔████╔██║██████╔╝██║     ██║   ██║ ╚████╔╝ █████╗  █████╗      
+        ██╔══╝  ██║╚██╔╝██║██╔═══╝ ██║     ██║   ██║  ╚██╔╝  ██╔══╝  ██╔══╝      
+        ███████╗██║ ╚═╝ ██║██║     ███████╗╚██████╔╝   ██║   ███████╗███████╗    
+        ╚══════╝╚═╝     ╚═╝╚═╝     ╚══════╝ ╚═════╝    ╚═╝   ╚══════╝╚══════╝    
+                                                                                 
+        ████████╗██████╗  █████╗  ██████╗██╗  ██╗███████╗██████╗                 
+        ╚══██╔══╝██╔══██╗██╔══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗                
+           ██║   ██████╔╝███████║██║     █████╔╝ █████╗  ██████╔╝                
+           ██║   ██╔══██╗██╔══██║██║     ██╔═██╗ ██╔══╝  ██╔══██╗                
+           ██║   ██║  ██║██║  ██║╚██████╗██║  ██╗███████╗██║  ██║                
+           ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝                
+                                                                                 
         
         `
     );
@@ -140,6 +139,7 @@ function view() {
             "All Employees by Manager",
             "All Departments",
             "All Roles",
+            "The total utilized budget of a department",
         ],
     }).then((answer) => {
         switch (answer.View) {
@@ -157,6 +157,9 @@ function view() {
                 break;
             case "All Roles":
                 viewAllRoles();
+                break;
+            default:
+                viewBudget();
                 break;
         }
     });
@@ -456,4 +459,15 @@ async function viewEmplByMgr() {
         });
         start();
     });
+}
+
+// View the total utilized budget of a department -- ie the combined salaries of all employees in that department
+function viewBudget() {
+    const query = `SELECT name AS department, SUM (DISTINCT salary) AS budget FROM department INNER JOIN role ON (department.id = role.department_id) INNER JOIN employee ON (role.id = employee.role_id) GROUP BY name ORDER BY budget DESC`;
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log("");
+        console.table(res);
+    });
+    start();
 }
